@@ -3,7 +3,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:gasonera/core/location/user_location_provider.dart';
-import 'package:gasonera/features/map/presentation/widgets/map_layer.dart';
+import 'package:gasonera/features/map/presentation/widgets/map_canvas.dart';
 
 class MapScreen extends ConsumerWidget {
   const MapScreen({super.key});
@@ -28,7 +28,7 @@ class MapScreen extends ConsumerWidget {
             ),
             backgroundColor: Colors.teal,
           ),
-          body: MapLayer(initialMapConfig: initialMapConfig),
+          body: MapCanvas(initialMapConfig: initialMapConfig),
         );
       },
 
@@ -57,7 +57,7 @@ class MapScreen extends ConsumerWidget {
             centerTitle: true,
             backgroundColor: Colors.teal,
           ),
-          body: MapLayer(initialMapConfig: initialMapConfig),
+          body: MapCanvas(initialMapConfig: initialMapConfig),
         );
       },
     );

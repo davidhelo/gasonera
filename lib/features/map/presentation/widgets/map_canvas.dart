@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MapLayer extends ConsumerWidget {
+import 'layers/layers.dart';
+
+class MapCanvas extends StatelessWidget {
   final Map<String, dynamic> initialMapConfig;
 
-  const MapLayer({super.key, required this.initialMapConfig});
+  const MapCanvas({super.key, required this.initialMapConfig});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return FlutterMap(
             options: MapOptions(
               initialCenter: initialMapConfig['initialUserLocation'],
               initialZoom: initialMapConfig['initialZoom'],
             ),
             children: [
-              TileLayer(
-                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                userAgentPackageName: 'com.example.gasonera',
-              ),
+              BaseTileLayer(),
               MarkerLayer(
                 markers: [
                   Marker(
