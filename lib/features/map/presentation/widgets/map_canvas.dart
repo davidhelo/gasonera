@@ -17,20 +17,7 @@ class MapCanvas extends StatelessWidget {
             ),
             children: [
               BaseTileLayer(),
-              MarkerLayer(
-                markers: [
-                  Marker(
-                    point: initialMapConfig['initialUserLocation'],
-                    width: 50.0,
-                    height: 50.0,
-                    child: const Icon(
-                      Icons.my_location,
-                      color: Colors.blue,
-                      size: 30.0,
-                    ),
-                  ),
-                ],
-              ),
+              CurrentPositionLayer(),
             ],
           );
   }

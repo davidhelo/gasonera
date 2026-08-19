@@ -8,8 +8,8 @@ class BaseTileLayer extends StatelessWidget {
   Widget build(BuildContext context) {
     return TileLayer(
       urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-      userAgentPackageName: 'com.example.app',
-      // Tile caching and tile provider configs go here
+      userAgentPackageName: 'dev.gasonera.app',
+      
     );
   }
 }
