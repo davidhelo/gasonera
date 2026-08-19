@@ -12,6 +12,7 @@ class MapScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationAsync = ref.watch(userLocationStreamProvider);
+    // Read DailyStationsSyncService provider to instantly fire the background sync execution loop
     ref.read(backgroundSyncTriggerProvider);
 
     return locationAsync.when(
