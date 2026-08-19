@@ -1,11 +1,15 @@
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gasonera/core/database/app_database.dart';
+import 'package:gasonera/core/database/sqlite_provider.dart';
 import 'package:gasonera/features/map/data/models/gas_station_model.dart';
 
 class DailyStationsLocalDataSource {
-  final AppDatabase _appDb;
+  final Ref _ref;
 
-  DailyStationsLocalDataSource(this._appDb);
+  DailyStationsLocalDataSource(this._ref);
+
+  AppDatabase get _appDb => _ref.read(appDatabaseProvider);
 
   // Get all cached gas stations
   Future<List<GasStationModel>> getCachedStations() async {
