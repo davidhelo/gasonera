@@ -5,6 +5,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'features/map/map.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
   await Supabase.initialize(
     url: 'https://zpkmlihxxugqbcegbggc.supabase.co',
     publishableKey: 'sb_publishable_Ju2QCZu8E1OEY_UNjh4mEA_iL2DAlVs',
