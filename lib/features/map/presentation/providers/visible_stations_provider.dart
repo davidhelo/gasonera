@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:gasonera/core/database/sqlite_provider.dart';
-import 'package:gasonera/features/map/data/repositories/stations_repository.dart';
-import 'package:gasonera/features/map/domain/entities/gas_station.dart';
+import 'package:gasonera/features/gas_stations/data/repositories/stations_repository.dart';
+import 'package:gasonera/features/gas_stations/domain/entities/gas_station.dart';
 
 
 /// StationsRepository provider

@@ -3,7 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 
-import 'package:gasonera/features/map/domain/entities/gas_station.dart';
+import 'package:gasonera/features/gas_stations/domain/entities/gas_station.dart';
 import 'package:gasonera/features/map/presentation/providers/visible_stations_provider.dart';
 
 class StationsMarkerLayer extends ConsumerWidget {

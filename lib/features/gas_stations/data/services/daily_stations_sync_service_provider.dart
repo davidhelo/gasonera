@@ -6,7 +6,7 @@ import 'package:gasonera/core/supabase_client_provider.dart';
 import 'package:gasonera/core/database/sqlite_provider.dart';
 import 'package:gasonera/core/database/app_database.dart';
 
-import 'package:gasonera/features/map/data/models/gas_station_model.dart';
+import 'package:gasonera/features/gas_stations/data/models/gas_station_model.dart';
 
 // 1. Provide the SyncService instance
 final dailyStationsSyncServiceProvider = Provider<DailyStationsSyncService>((ref) {

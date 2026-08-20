@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:gasonera/core/location/user_location_provider.dart';
 import 'package:gasonera/features/map/presentation/widgets/map_canvas.dart';
-import 'package:gasonera/features/map/data/services/daily_stations_sync_service_provider.dart';
+import 'package:gasonera/features/gas_stations/data/services/daily_stations_sync_service_provider.dart';
 
 class MapScreen extends ConsumerWidget {
   const MapScreen({super.key});
