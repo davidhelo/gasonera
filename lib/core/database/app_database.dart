@@ -25,6 +25,7 @@ class AppDatabase {
 
   /// Create tables on first app install
   Future<void> _onCreate(Database db, int version) async {
+    // Create table daily_gas_stations
     await db.execute('''
       CREATE TABLE daily_gas_stations (
         place_id INTEGER PRIMARY KEY,
@@ -38,6 +39,10 @@ class AppDatabase {
         price_date TEXT,
         last_updated INTEGER NOT NULL
       )
+    ''');
+    // Create index for latitude and logitude for faster performance on spatial queries
+    await db.execute('''
+      CREATE INDEX idx_daily_gas_stations_coords ON daily_gas_stations(latitude, longitude);
     ''');
   }
 
