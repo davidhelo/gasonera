@@ -73,7 +73,7 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
       children: const [
         BaseTileLayer(),
         UserLocationLayer(),
-        StationsMarkerLayer(),
+        StationsMarkerClusterLayer(),
       ],
     );
   }
