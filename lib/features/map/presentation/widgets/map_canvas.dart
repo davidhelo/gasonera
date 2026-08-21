@@ -10,6 +10,7 @@ import 'package:gasonera/features/map/presentation/providers/map_controller_prov
 import 'package:gasonera/core/location/user_location_stream_provider.dart';
 import 'package:gasonera/core/location/user_position_model.dart';
 import 'package:gasonera/features/map/domain/initial_map_config.dart';
+import 'package:gasonera/features/gas_stations/domain/entities/map_bounds.dart';
 
 class MapCanvas extends ConsumerStatefulWidget {
   const MapCanvas({super.key});
@@ -60,11 +61,12 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
           // Update visible stations provider with current viewport coordinates
           ref
               .read(visibleStationsProvider.notifier)
-              .updateBounds(
+              .updateBounds(MapBounds(
                 minLat: bounds.south,
                 maxLat: bounds.north,
                 minLng: bounds.west,
                 maxLng: bounds.east,
+              )
               );
         },
       ),
