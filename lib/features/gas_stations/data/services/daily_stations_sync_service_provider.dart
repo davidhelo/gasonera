@@ -2,7 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:gasonera/core/supabase_client_provider.dart';
+import 'package:gasonera/core/supabase/supabase_client_provider.dart';
 import 'package:gasonera/core/database/sqlite_provider.dart';
 import 'package:gasonera/core/database/app_database.dart';
 
