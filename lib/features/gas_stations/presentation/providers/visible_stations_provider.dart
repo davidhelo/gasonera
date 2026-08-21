@@ -1,17 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:gasonera/core/database/sqlite_provider.dart';
-import 'package:gasonera/features/gas_stations/data/repositories/stations_repository.dart';
+import 'package:gasonera/features/gas_stations/data/repositories/stations_repository_provider.dart';
 import 'package:gasonera/features/gas_stations/domain/entities/gas_station.dart';
 
-
-/// StationsRepository provider
-final stationsRepositoryProvider = Provider<StationsRepository>((ref) {
-  final appDb = ref.watch(appDatabaseProvider);
-  return StationsRepository(localDb: appDb);
-});
-
-/// Notifier managing spatial queries and visible gas stations based on camera position
 class VisibleStationsNotifier extends AsyncNotifier<List<GasStation>> {
   @override
   Future<List<GasStation>> build() async {
@@ -19,14 +10,14 @@ class VisibleStationsNotifier extends AsyncNotifier<List<GasStation>> {
     return [];
   }
 
-  /// Called by the map widget whenever camera pan or zoom gesture ends
+  // Called by the map widget whenever camera pan or zoom gesture ends
   Future<void> updateBounds({
     required double minLat,
     required double maxLat,
     required double minLng,
     required double maxLng,
   }) async {
-    final repository = ref.read(stationsRepositoryProvider);
+    final repository = ref.read(gasStationsRepositoryProvider);
 
     final updatedList = await repository.getStationsInBounds(
       minLat: minLat,
@@ -42,5 +33,5 @@ class VisibleStationsNotifier extends AsyncNotifier<List<GasStation>> {
 // Primary Riverpod provider for visible stations
 final visibleStationsProvider =
     AsyncNotifierProvider<VisibleStationsNotifier, List<GasStation>>(
-  VisibleStationsNotifier.new,
-);
+      VisibleStationsNotifier.new,
+    );

@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'package:gasonera/features/gas_stations/domain/entities/gas_station.dart';
-import 'package:gasonera/features/map/presentation/providers/visible_stations_provider.dart';
+import 'package:gasonera/features/gas_stations/presentation/providers/visible_stations_provider.dart';
 
 class StationsMarkerLayer extends ConsumerWidget {
   final void Function(GasStation station)? onStationSelected;

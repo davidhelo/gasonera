@@ -1,12 +1,18 @@
 import 'package:gasonera/core/database/app_database.dart';
 import 'package:gasonera/features/gas_stations/data/models/gas_station_model.dart';
+import 'package:gasonera/features/gas_stations/domain/entities/gas_station.dart';
+import 'package:gasonera/features/gas_stations/domain/repositories/gas_stations_repository.dart';
 
-class StationsRepository {
+
+class StationsRepository implements GasStationsRepository {
   final AppDatabase _appDb;
 
-  StationsRepository({required AppDatabase localDb})  : _appDb = localDb;
+  StationsRepository({
+    required AppDatabase localDb
+    })  : _appDb = localDb;
 
-  Future<List<GasStationModel>> getStationsInBounds({
+  @override
+  Future<List<GasStation>> getStationsInBounds({
     required double minLat,
     required double maxLat,
     required double minLng,
@@ -14,15 +20,20 @@ class StationsRepository {
   }) async {
     final db = await _appDb.database;
     
-    final List<Map<String, dynamic>> maps = await db.rawQuery('''
-        SELECT place_id, name, cre_id, latitude, longitude, regular_price, premium_price, diesel_price, price_date
-        FROM daily_gas_stations
-        WHERE (latitude BETWEEN ? AND ?)
-          AND (longitude BETWEEN ? AND ?);
+    final List<Map<String, dynamic>> stationsInBounds = await db.query(
+      'daily_gas_stations',
+      where: '''
+        latitude BETWEEN ? AND ?
+        AND longitude BETWEEN ? AND ?
       ''',
-      [minLat, maxLat, minLng, maxLng]
+      whereArgs: [
+        minLat,
+        maxLat,
+        minLng,
+        maxLng,
+      ],
     );
     
-    return maps.map((map) => GasStationModel.fromSqfliteMap(map)).toList();
+    return stationsInBounds.map((map) => GasStationModel.fromSqfliteMap(map)).toList();
   }
 }
