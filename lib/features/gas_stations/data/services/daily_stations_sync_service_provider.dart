@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,14 +17,6 @@ final dailyStationsSyncServiceProvider = Provider<DailyStationsSyncService>((ref
   return DailyStationsSyncService(localDb: appDb, apiClient: client);
 });
 
-/// 2. Fires the background sync once when the provider is first read/initialized
-final backgroundSyncTriggerProvider = Provider<void>((ref) {
-  final syncService = ref.watch(dailyStationsSyncServiceProvider);
-  
-  // Execute asynchronously (fire-and-forget) so it doesn't block Riverpod initialization
-  Future.microtask(() => syncService.syncDailyStations());
-});
-
 class DailyStationsSyncService {
   final AppDatabase _appDb;
   final SupabaseClient _client;
@@ -36,7 +29,7 @@ class DailyStationsSyncService {
 
   Future<void> syncDailyStations() async {
     try {
-      print('Initial database sync started...');
+      debugPrint('Initial database sync started...');
       // 1. Check if local cache is from today
       final lastCacheTime = await getLastCacheTime();
       
@@ -47,12 +40,12 @@ class DailyStationsSyncService {
         // 3. Persist fresh stations to SQLite in a batch operation
         await cacheStations(remoteStations);
 
-        print('Initial database sync completed successfully.');
+        debugPrint('Initial database sync completed successfully.');
       } else {
-        print('APP DATABASE IS UP TO DATE ALREADY!');
+        debugPrint('APP DATABASE IS UP TO DATE ALREADY!');
       }
     } catch (e) {
-      print('Initial sync failed: $e');
+      debugPrint('Initial sync failed: $e');
     }
   }
 

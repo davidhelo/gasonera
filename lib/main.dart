@@ -3,10 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'features/map/map.dart';
+import 'package:gasonera/core/startup/app_startup_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   await Supabase.initialize(
     url: 'https://zpkmlihxxugqbcegbggc.supabase.co',
     publishableKey: 'sb_publishable_Ju2QCZu8E1OEY_UNjh4mEA_iL2DAlVs',
@@ -17,12 +18,14 @@ Future<void> main() async {
     ));
 }
 
-
-class GasoneraMainApp extends StatelessWidget {
+class GasoneraMainApp extends ConsumerWidget {
   const GasoneraMainApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Tgigger startup initialization
+    ref.read(appStartupProvider);
+
     return const MaterialApp(
       home: MapScreen(),
     );
