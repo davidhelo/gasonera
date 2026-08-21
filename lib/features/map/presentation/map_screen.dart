@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:gasonera/core/location/user_location_provider.dart';
+import 'package:gasonera/core/location/user_location_stream_provider.dart';
 import 'package:gasonera/features/map/presentation/widgets/map_canvas.dart';
 import 'package:gasonera/features/gas_stations/data/services/daily_stations_sync_service_provider.dart';
 

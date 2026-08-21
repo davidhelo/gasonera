@@ -8,8 +8,11 @@ const LocationSettings locationSettings = LocationSettings(
       distanceFilter: 100,
     );
 
-/// StreamProvider that listens to continuous device GPS updates
-final userLocationStreamProvider = StreamProvider<UserPosition>((ref) async* {
+// Stream provider
+final userLocationStreamProvider = StreamProvider<UserPosition>((ref) => userLocationStream());
+
+/// Stream that listens to continuous device GPS updates
+Stream<UserPosition> userLocationStream() async* {
   // 1. Check & request GPS permissions
   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
@@ -37,4 +40,6 @@ final userLocationStreamProvider = StreamProvider<UserPosition>((ref) async* {
   yield* Geolocator.getPositionStream(
     locationSettings: locationSettings,
   ).map((pos) => UserPosition.fromPosition(pos));
-});
+}
+
+
