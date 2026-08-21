@@ -31,7 +31,7 @@ class MapCanvas extends ConsumerWidget {
             ),
             children: [
               BaseTileLayer(),
-              CurrentPositionLayer(),
+              UserLocationLayer(),
               StationsMarkerLayer(),
             ],
           );
