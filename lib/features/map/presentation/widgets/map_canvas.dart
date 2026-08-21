@@ -6,39 +6,73 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'layers/layers.dart';
 
 import 'package:gasonera/features/map/presentation/providers/visible_stations_provider.dart';
+import 'package:gasonera/features/map/presentation/providers/map_controller_provider.dart';
+import 'package:gasonera/core/location/user_location_stream_provider.dart';
+import 'package:gasonera/core/location/user_position_model.dart';
+import 'package:gasonera/features/map/domain/initial_map_config.dart';
 
-class MapCanvas extends ConsumerWidget {
-  final Map<String, dynamic> initialMapConfig; // Optional parameters for initial map configurations
-  
-  const MapCanvas({super.key, this.initialMapConfig = const {
-        'initialUserLocation': LatLng(19.4326, -99.1332), // Default to Mexico City
-        'initialZoom': 5.0
-      }});
+class MapCanvas extends ConsumerStatefulWidget {
+  const MapCanvas({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return FlutterMap(
-            options: MapOptions(
-              initialCenter: initialMapConfig['initialUserLocation'],
-              initialZoom: initialMapConfig['initialZoom'],
-              // Triggered when camera moves or stops
-              onPositionChanged: (position, hasGesture) {
-                final bounds = position.visibleBounds;
-                // Update visible stations provider with current viewport coordinates
-                ref.read(visibleStationsProvider.notifier).updateBounds(
-                  minLat: bounds.south,
-                  maxLat: bounds.north,
-                  minLng: bounds.west,
-                  maxLng: bounds.east,
-                );
-              }
-            ),
-            children: [
-              BaseTileLayer(),
-              UserLocationLayer(),
-              StationsMarkerLayer(),
-            ],
-          );
+  ConsumerState<MapCanvas> createState() => _MapCanvasState();
+}
+
+class _MapCanvasState extends ConsumerState<MapCanvas> {
+  bool _initialLocationSet = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    ref.listenManual<AsyncValue<UserPosition>>(userLocationStreamProvider, (
+      previous,
+      next,
+    ) {
+      next.whenData((position) {
+        if (_initialLocationSet) {
+          return;
+        }
+
+        _initialLocationSet = true;
+
+        final mapController = ref.read(mapControllerProvider);
+
+        mapController.move(LatLng(position.latitude, position.longitude), 15.0);
+      });
+    });
   }
 
+  @override
+  Widget build(BuildContext context) {
+    final mapController = ref.watch(mapControllerProvider);
+
+    return FlutterMap(
+      mapController: mapController,
+      options: MapOptions(
+        initialCenter: LatLng(
+          initialMapConfig.latitude,
+          initialMapConfig.longitude,
+        ),
+        initialZoom: initialMapConfig.zoom,
+        onPositionChanged: (position, hasGesture) {
+          final bounds = position.visibleBounds;
+          // Update visible stations provider with current viewport coordinates
+          ref
+              .read(visibleStationsProvider.notifier)
+              .updateBounds(
+                minLat: bounds.south,
+                maxLat: bounds.north,
+                minLng: bounds.west,
+                maxLng: bounds.east,
+              );
+        },
+      ),
+      children: const [
+        BaseTileLayer(),
+        UserLocationLayer(),
+        StationsMarkerLayer(),
+      ],
+    );
+  }
 }
