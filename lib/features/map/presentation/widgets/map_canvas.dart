@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'layers/layers.dart';
 
-import 'package:gasonera/features/gas_stations/providers/visible_stations_provider.dart';
 import 'package:gasonera/features/map/providers/map_controller_provider.dart';
+import 'package:gasonera/features/map/providers/map_viewport_provider.dart';
 import 'package:gasonera/core/location/user_location_stream_provider.dart';
 import 'package:gasonera/core/location/user_position_model.dart';
 import 'package:gasonera/features/map/domain/initial_map_config.dart';
@@ -58,15 +58,16 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
         initialZoom: initialMapConfig.zoom,
         onPositionChanged: (position, hasGesture) {
           final bounds = position.visibleBounds;
-          // Update visible stations provider with current viewport coordinates
-          ref
-              .read(visibleStationsProvider.notifier)
-              .updateBounds(MapBounds(
-                minLat: bounds.south,
-                maxLat: bounds.north,
-                minLng: bounds.west,
-                maxLng: bounds.east,
-              )
+          // Emit viewport updates through the dedicated map viewport state provider
+          ref.read(mapViewportProvider.notifier).updateViewport(
+                bounds: MapBounds(
+                  minLat: bounds.south,
+                  maxLat: bounds.north,
+                  minLng: bounds.west,
+                  maxLng: bounds.east,
+                ),
+                zoom: position.zoom,
+                center: position.center,
               );
         },
       ),

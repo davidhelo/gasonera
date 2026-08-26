@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gasonera/features/gas_stations/data/repositories/stations_repository_provider.dart';
 import 'package:gasonera/features/gas_stations/domain/entities/gas_station.dart';
 import 'package:gasonera/features/gas_stations/domain/entities/map_bounds.dart';
+import 'package:gasonera/features/map/providers/map_viewport_provider.dart';
 
 class VisibleStationsNotifier extends AsyncNotifier<List<GasStation>> {
   Timer? _timer;
@@ -18,10 +19,17 @@ class VisibleStationsNotifier extends AsyncNotifier<List<GasStation>> {
       _timer?.cancel();
     });
 
+    // Listen to the viewport provider directly from within the Notifier.
+    ref.listen(mapViewportProvider, (previous, next) {
+      if (next.bounds != null) {
+        _updateBounds(next.bounds!);
+      }
+    });
+
     return [];
   }
 
-  void updateBounds(MapBounds bounds) {
+  void _updateBounds(MapBounds bounds) {
     _pendingBounds = bounds;
 
     if (_queryRunning) {
