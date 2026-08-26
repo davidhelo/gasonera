@@ -5,7 +5,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 
 import 'package:gasonera/features/gas_stations/domain/entities/gas_station.dart';
-import 'package:gasonera/features/gas_stations/presentation/providers/visible_stations_provider.dart';
+import 'package:gasonera/features/gas_stations/providers/visible_stations_provider.dart';
 import 'package:gasonera/features/map/presentation/widgets/station_marker_pin.dart';
 
 class StationsMarkerClusterLayer extends ConsumerWidget {

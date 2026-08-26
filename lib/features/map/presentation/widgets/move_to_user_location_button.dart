@@ -3,7 +3,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:gasonera/core/location/user_location_stream_provider.dart';
-import 'package:gasonera/features/map/presentation/providers/map_controller_provider.dart';
+import 'package:gasonera/features/map/providers/map_controller_provider.dart';
 
 
 class MoveToUserLocationButton extends ConsumerWidget {

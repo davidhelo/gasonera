@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'layers/layers.dart';
 
-import 'package:gasonera/features/gas_stations/presentation/providers/visible_stations_provider.dart';
-import 'package:gasonera/features/map/presentation/providers/map_controller_provider.dart';
+import 'package:gasonera/features/gas_stations/providers/visible_stations_provider.dart';
+import 'package:gasonera/features/map/providers/map_controller_provider.dart';
 import 'package:gasonera/core/location/user_location_stream_provider.dart';
 import 'package:gasonera/core/location/user_position_model.dart';
 import 'package:gasonera/features/map/domain/initial_map_config.dart';
