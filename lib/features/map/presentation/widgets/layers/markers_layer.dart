@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:latlong2/latlong.dart';
 
 import 'package:gasonera/features/gas_stations/domain/entities/gas_station.dart';
 import 'package:gasonera/features/gas_stations/providers/visible_stations_provider.dart';
-import 'package:gasonera/features/map/presentation/widgets/station_marker_pin.dart';
+import 'package:gasonera/features/map/presentation/widgets/station_marker_factory.dart';
 
 class StationsMarkerLayer extends ConsumerWidget {
   final void Function(GasStation station)? onStationSelected;
 
-  const StationsMarkerLayer({
-    super.key,
-    this.onStationSelected,
-  });
+  const StationsMarkerLayer({super.key, this.onStationSelected});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,24 +20,16 @@ class StationsMarkerLayer extends ConsumerWidget {
         if (stations.isEmpty) {
           return const SizedBox.shrink();
         }
-        //print(stations.length);
+        
         return MarkerLayer(
-          markers: stations.map((station) {
-            return Marker(
-              point: LatLng(station.latitude, station.longitude),
-              width: 80,
-              height: 55,
-              alignment: Alignment.topCenter,
-              child: StationMarkerPin(
-                station: station,
-                onTap: () {
-                  if (onStationSelected != null) {
-                    onStationSelected!(station);
-                  }
-                },
-              ),
-            );
-          }).toList(),
+          markers: stations
+              .map(
+                (station) => buildStationMarker(
+                  station: station,
+                  onStationSelected: onStationSelected,
+                ),
+              )
+              .toList(),
         );
       },
       // Keep existing pins on map while brief SQLite re-query occurs
