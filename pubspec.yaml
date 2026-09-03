@@ -12,6 +12,7 @@ dependencies:
   flutter_map: ^8.3.1
   flutter_map_location_marker: ^10.3.0
   flutter_map_marker_cluster: ^8.2.2
+  flutter_map_vector_tiles: ^2.8.1
   flutter_riverpod: ^3.4.2
   geolocator: ^14.0.3
   latlong2: ^0.9.1
@@ -25,3 +26,6 @@ dev_dependencies:
   flutter_lints: ^6.0.0
 flutter:
   uses-material-design: true
+
+  assets: 
+    - assets/custom_ofm_bright_style_based_on_protomaps_light.json
