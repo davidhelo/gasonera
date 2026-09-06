@@ -71,6 +71,11 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
           initialMapConfig.longitude,
         ),
         initialZoom: initialMapConfig.zoom,
+        initialRotation: 0,
+        interactionOptions: InteractionOptions(
+          flags: ~InteractiveFlag.rotate,
+          cursorKeyboardRotationOptions: CursorKeyboardRotationOptions.disabled(),
+        ),
         onPositionChanged: (position, hasGesture) {
           final bounds = position.visibleBounds;
           // Emit viewport updates through the dedicated map viewport state provider
