@@ -1,39 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:gasonera/features/map/presentation/widgets/map_canvas.dart';
 import 'package:gasonera/features/map/presentation/widgets/move_to_user_location_button.dart';
 import 'package:gasonera/features/gas_stations/presentation/widgets/station_info_card.dart';
+import 'package:gasonera/features/gas_stations/presentation/widgets/gas_type_selector.dart';
 
-class MapScreen extends StatelessWidget {
+class MapScreen extends ConsumerWidget {
   const MapScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('GASONERA', style: const TextStyle(fontSize: 16)),
+        title: const Text('GASONERA', style: TextStyle(fontSize: 16)),
         backgroundColor: Colors.teal,
       ),
       body: Stack(
         children: [
           const MapCanvas(),
           Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
+            bottom: 24,
+            left: 20,
+            right: 20,
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Align(
                   alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      right: 16,
-                      bottom: 14,
-                    ),
-                    child: const MoveToUserLocationButton(),
-                  ),
+                  child: MoveToUserLocationButton()
                 ),
+                const SizedBox(height: 8),
+                const GasTypeSelector(),
+                const SizedBox(height: 4),
                 const StationInfoCard(),
               ],
             ),

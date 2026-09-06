@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:gasonera/features/gas_stations/domain/entities/gas_station.dart';
+import 'package:gasonera/features/gas_stations/providers/selected_gas_type_provider.dart';
+import 'package:gasonera/features/gas_stations/domain/entities/gas_type.dart';
 
-/// Custom Pin Widget displaying Regular Gas Price
-class StationMarkerPin extends StatelessWidget {
+/// Custom Pin Widget displaying Gas Price based on selected type
+class StationMarkerPin extends ConsumerWidget {
   final GasStation station;
   final VoidCallback? onTap;
 
@@ -14,12 +17,18 @@ class StationMarkerPin extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final priceText = station.regularPrice != null
-        ? '\$${station.regularPrice!.toStringAsFixed(2)}'
-        : 'N/A';
+  Widget build(BuildContext context, WidgetRef ref) {
+    final gasType = ref.watch(gasTypeProvider);
 
-    return GestureDetector(
+    final double? price = switch (gasType) {
+      GasType.regular => station.regularPrice,
+      GasType.premium => station.premiumPrice,
+      GasType.diesel => station.dieselPrice,
+    };
+
+    return price == null 
+    ? SizedBox.shrink() 
+    : GestureDetector(
       onTap: onTap,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -28,7 +37,7 @@ class StationMarkerPin extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
-              color: Colors.green.shade800,
+              color: gasType.color,
               borderRadius: BorderRadius.circular(12),
               boxShadow: const [
                 BoxShadow(
@@ -39,11 +48,11 @@ class StationMarkerPin extends StatelessWidget {
               ],
             ),
             child: Text(
-              priceText,
+              '\$${price.toStringAsFixed(2)}',
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: 11,
+                fontSize: 14,
               ),
             ),
           ),

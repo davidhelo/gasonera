@@ -32,7 +32,7 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
     // upwards, centering it in the visible area above the StationInfoCard.
     // Approx 0.004 degrees is ~90-110 pixels at zoom 15.
     mapController.move(
-      LatLng(station.latitude - 0.002, station.longitude),
+      LatLng(station.latitude - 0.004, station.longitude),
       15.0,
     );
   }

@@ -29,7 +29,7 @@ class StationInfoCard extends ConsumerWidget {
     }
 
     return Card(
-      margin: const EdgeInsets.fromLTRB(10, 0, 10, 22),
+      // margin: const EdgeInsets.fromLTRB(10, 0, 10, 22),
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Stack(
@@ -133,7 +133,7 @@ class StationInfoCard extends ConsumerWidget {
       margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 0),
       decoration: BoxDecoration(
-        border: Border.all(color: color, width: 0.25),
+        border: Border.all(color: color, width: 0.75),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
