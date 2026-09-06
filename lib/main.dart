@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'features/map/map.dart';
 import 'package:gasonera/core/startup/app_startup_provider.dart';
@@ -12,6 +13,8 @@ Future<void> main() async {
     url: 'https://zpkmlihxxugqbcegbggc.supabase.co',
     publishableKey: 'sb_publishable_Ju2QCZu8E1OEY_UNjh4mEA_iL2DAlVs',
   );
+
+  await initializeDateFormatting('es', null);
 
   runApp(ProviderScope(
       child: GasoneraMainApp(),

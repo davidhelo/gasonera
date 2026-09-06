@@ -84,7 +84,7 @@ class StationInfoCard extends ConsumerWidget {
                     child: Row(
                       children: [
                         Text(
-                          'Actualizado el ${DateFormat('dd/MMMM/yyyy').format(selectedStation.priceDate!.toLocal())}',
+                          'Actualizado el ${DateFormat('dd/MMMM/yyyy', 'es').format(selectedStation.priceDate!.toLocal())}',
                           style: const TextStyle(fontSize: 12, color: Colors.grey),
                         ),
                         const SizedBox(width: 4),
@@ -133,7 +133,7 @@ class StationInfoCard extends ConsumerWidget {
       margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 0),
       decoration: BoxDecoration(
-        border: Border.all(color: color, width: 0.1),
+        border: Border.all(color: color, width: 0.25),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -141,7 +141,7 @@ class StationInfoCard extends ConsumerWidget {
         children: [
           Text(
             label,
-            style: const TextStyle(fontSize: 12, color: Colors.grey),
+            style: const TextStyle(fontSize: 14),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 2),
