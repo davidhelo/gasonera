@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gasonera/features/gas_stations/domain/entities/gas_station.dart';
 import 'package:gasonera/features/gas_stations/providers/selected_gas_type_provider.dart';
 import 'package:gasonera/features/gas_stations/domain/entities/gas_type.dart';
+import 'package:gasonera/features/map/providers/selected_station_provider.dart';
 
 /// Custom Pin Widget displaying Gas Price based on selected type
 class StationMarkerPin extends ConsumerWidget {
@@ -19,6 +20,8 @@ class StationMarkerPin extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final gasType = ref.watch(gasTypeProvider);
+    final selectedStation = ref.watch(selectedStationProvider);
+    final isSelected = selectedStation?.placeId == station.placeId;
 
     final double? price = switch (gasType) {
       GasType.regular => station.regularPrice,
@@ -26,43 +29,46 @@ class StationMarkerPin extends ConsumerWidget {
       GasType.diesel => station.dieselPrice,
     };
 
-    return price == null 
-    ? SizedBox.shrink() 
+    return price == null
+    ? SizedBox.shrink()
     : GestureDetector(
       onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Price Badge Bubble
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-            decoration: BoxDecoration(
-              color: gasType.color,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 4,
-                  offset: Offset(0, 2),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Price Badge Bubble
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              decoration: BoxDecoration(
+                color: gasType.color,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: isSelected ? 8 : 4,
+                    offset: Offset(0, isSelected ? 4 : 2),
+                  ),
+                ],
+              ),
+              child: Text(
+                '\$${price.toStringAsFixed(2)}',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: isSelected ? 16 : 14,
                 ),
-              ],
-            ),
-            child: Text(
-              '\$${price.toStringAsFixed(2)}',
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
               ),
             ),
-          ),
-          // Pin Needle Icon
-          const Icon(
-            Icons.location_on,
-            color: Colors.redAccent,
-            size: 28,
-          ),
-        ],
+            // Pin Needle Icon
+            Icon(
+              Icons.location_on,
+              color: isSelected ? Colors.red : Colors.redAccent,
+              size: isSelected ? 40 : 28,
+            ),
+          ],
+        ),
       ),
     );
   }

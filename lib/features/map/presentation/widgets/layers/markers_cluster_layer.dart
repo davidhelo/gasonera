@@ -4,6 +4,7 @@ import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 
 import 'package:gasonera/features/gas_stations/domain/entities/gas_station.dart';
 import 'package:gasonera/features/gas_stations/providers/visible_stations_provider.dart';
+import 'package:gasonera/features/map/providers/selected_station_provider.dart';
 import 'package:gasonera/features/map/presentation/widgets/station_marker_factory.dart';
 
 class StationsMarkerClusterLayer extends ConsumerWidget {
@@ -13,10 +14,19 @@ class StationsMarkerClusterLayer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final stationsAsync = ref.watch(visibleStationsProvider);
+    final selectedStation = ref.watch(selectedStationProvider);
 
     final stations = stationsAsync.value ?? [];
 
-    final markers = stations
+    // Sort stations so the selected one is rendered last (on top)
+    final sortedStations = List<GasStation>.from(stations)
+      ..sort((a, b) {
+        if (a.placeId == selectedStation?.placeId) return 1;
+        if (b.placeId == selectedStation?.placeId) return -1;
+        return 0;
+      });
+
+    final markers = sortedStations
         .map((station) => buildStationMarker(
               station: station,
               onStationSelected: onStationSelected,
