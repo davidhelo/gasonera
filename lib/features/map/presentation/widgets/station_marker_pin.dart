@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gasonera/features/gas_stations/domain/entities/gas_station.dart';
 import 'package:gasonera/features/gas_stations/providers/selected_gas_type_provider.dart';
 import 'package:gasonera/features/gas_stations/domain/entities/gas_type.dart';
+import 'package:gasonera/features/gas_stations/providers/lowest_price_provider.dart';
 import 'package:gasonera/features/map/providers/selected_station_provider.dart';
 
 /// Custom Pin Widget displaying Gas Price based on selected type
@@ -21,6 +22,7 @@ class StationMarkerPin extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final gasType = ref.watch(gasTypeProvider);
     final selectedStation = ref.watch(selectedStationProvider);
+    final lowestPrice = ref.watch(lowestPriceProvider);
     final isSelected = selectedStation?.placeId == station.placeId;
 
     final double? price = switch (gasType) {
@@ -28,6 +30,8 @@ class StationMarkerPin extends ConsumerWidget {
       GasType.premium => station.premiumPrice,
       GasType.diesel => station.dieselPrice,
     };
+
+    final bool isLowestPrice = price != null && lowestPrice != null && price == lowestPrice;
 
     return price == null
     ? SizedBox.shrink()
@@ -44,6 +48,9 @@ class StationMarkerPin extends ConsumerWidget {
               decoration: BoxDecoration(
                 color: gasType.color,
                 borderRadius: BorderRadius.circular(12),
+                border: isLowestPrice
+                  ? Border.all(color: Colors.limeAccent, width: 3)
+                  : null,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black26,

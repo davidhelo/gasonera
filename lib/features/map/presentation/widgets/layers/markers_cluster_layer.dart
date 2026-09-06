@@ -8,6 +8,7 @@ import 'package:gasonera/features/gas_stations/domain/entities/gas_station.dart'
 import 'package:gasonera/features/gas_stations/domain/entities/gas_type.dart';
 import 'package:gasonera/features/gas_stations/providers/selected_gas_type_provider.dart';
 import 'package:gasonera/features/gas_stations/providers/visible_stations_provider.dart';
+import 'package:gasonera/features/gas_stations/providers/lowest_price_provider.dart';
 import 'package:gasonera/features/map/providers/selected_station_provider.dart';
 import 'package:gasonera/features/map/presentation/widgets/station_marker_factory.dart';
 
@@ -20,6 +21,7 @@ class StationsMarkerClusterLayer extends ConsumerWidget {
     final stationsAsync = ref.watch(visibleStationsProvider);
     final selectedStation = ref.watch(selectedStationProvider);
     final gasType = ref.watch(gasTypeProvider);
+    final lowestPrice = ref.watch(lowestPriceProvider);
 
     final stations = stationsAsync.value ?? [];
 
@@ -77,10 +79,17 @@ class StationsMarkerClusterLayer extends ConsumerWidget {
             }
           }
 
+          final bool hasLowestPrice = prices.isNotEmpty &&
+                                     lowestPrice != null &&
+                                     prices.contains(lowestPrice);
+
           return Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: gasType.color.withValues(alpha: 0.75),
+              border: hasLowestPrice
+                  ? Border.all(color: Colors.limeAccent, width: 3)
+                  : null,
             ),
             child: Center(
               child: Text(

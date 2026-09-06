@@ -12,7 +12,7 @@ Marker buildStationMarker({
   return Marker(
     point: LatLng(station.latitude, station.longitude),
     width: 80,
-    height: 70,
+    height: 75,
     alignment: Alignment.topCenter,
     child: StationMarkerPin(
       station: station,
