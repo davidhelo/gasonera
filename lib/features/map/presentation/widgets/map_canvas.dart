@@ -3,6 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:math' as math;
+import 'package:flutter_map_animations/flutter_map_animations.dart';
 
 import 'layers/layers.dart';
 
@@ -14,6 +15,7 @@ import 'package:gasonera/features/map/domain/initial_map_config.dart';
 import 'package:gasonera/features/gas_stations/domain/entities/map_bounds.dart';
 import 'package:gasonera/features/gas_stations/domain/entities/gas_station.dart';
 import 'package:gasonera/features/map/providers/selected_station_provider.dart';
+import 'package:gasonera/features/map/providers/map_animation_provider.dart';
 
 class MapCanvas extends ConsumerStatefulWidget {
   const MapCanvas({super.key});
@@ -22,14 +24,14 @@ class MapCanvas extends ConsumerStatefulWidget {
   ConsumerState<MapCanvas> createState() => _MapCanvasState();
 }
 
-class _MapCanvasState extends ConsumerState<MapCanvas> {
+class _MapCanvasState extends ConsumerState<MapCanvas> with TickerProviderStateMixin {
   bool _initialLocationSet = false;
+  late AnimatedMapController _animatedController;
 
   void _handleStationSelected(GasStation station) {
     ref.read(selectedStationProvider.notifier).setStation(station);
 
-    final mapController = ref.read(mapControllerProvider);
-    final zoom = mapController.camera.zoom;
+    final zoom = _animatedController.mapController.camera.zoom;
 
     // We shift the map center slightly south to move the marker upwards,
     // centering it in the visible area above the StationInfoCard.
@@ -37,15 +39,27 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
     // 0.004 degrees is ~90-110 pixels at zoom 15.
     final double offset = 0.004 * math.pow(2, 15 - zoom).toDouble();
 
-    mapController.move(
-      LatLng(station.latitude - offset, station.longitude),
-      zoom,
+    _animatedController.animateTo(
+      dest: LatLng(station.latitude - offset, station.longitude),
+      zoom: zoom,
     );
   }
 
   @override
   void initState() {
     super.initState();
+
+    final mapController = ref.read(mapControllerProvider);
+    _animatedController = AnimatedMapController(
+      mapController: mapController,
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+      curve: Curves.easeInOutCubic,
+    );
+
+    Future.microtask(() {
+      ref.read(mapAnimationProvider.notifier).setController(_animatedController);
+    });
 
     ref.listenManual<AsyncValue<UserPosition>>(userLocationStreamProvider, (
       previous,
@@ -58,11 +72,21 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
 
         _initialLocationSet = true;
 
-        final mapController = ref.read(mapControllerProvider);
-
-        mapController.move(LatLng(position.latitude, position.longitude), 15.0);
+        _animatedController.animateTo(
+          dest: LatLng(position.latitude, position.longitude),
+          zoom: 15.0,
+        );
       });
     });
+  }
+
+  @override
+  void dispose() {
+    Future.microtask(() {
+      ref.read(mapAnimationProvider.notifier).setController(null);
+    });
+    _animatedController.dispose();
+    super.dispose();
   }
 
   @override
