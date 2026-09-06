@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:math' as math;
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 
 import 'package:gasonera/features/gas_stations/domain/entities/gas_station.dart';
+import 'package:gasonera/features/gas_stations/domain/entities/gas_type.dart';
+import 'package:gasonera/features/gas_stations/providers/selected_gas_type_provider.dart';
 import 'package:gasonera/features/gas_stations/providers/visible_stations_provider.dart';
 import 'package:gasonera/features/map/providers/selected_station_provider.dart';
 import 'package:gasonera/features/map/presentation/widgets/station_marker_factory.dart';
@@ -15,6 +19,7 @@ class StationsMarkerClusterLayer extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final stationsAsync = ref.watch(visibleStationsProvider);
     final selectedStation = ref.watch(selectedStationProvider);
+    final gasType = ref.watch(gasTypeProvider);
 
     final stations = stationsAsync.value ?? [];
 
@@ -26,31 +31,65 @@ class StationsMarkerClusterLayer extends ConsumerWidget {
         return 0;
       });
 
+    // Map markers to their stations to retrieve price data in the cluster builder
+    final markerToStation = <Marker, GasStation>{};
     final markers = sortedStations
-        .map((station) => buildStationMarker(
-              station: station,
-              onStationSelected: onStationSelected,
-            ))
+        .map((station) {
+          final marker = buildStationMarker(
+                station: station,
+                onStationSelected: onStationSelected,
+              );
+          markerToStation[marker] = station;
+          return marker;
+        })
         .toList();
 
     return MarkerClusterLayerWidget(
       options: MarkerClusterLayerOptions(
-        maxClusterRadius: 50,
-        disableClusteringAtZoom: 14,
-        size: const Size(40, 40),
+        maxClusterRadius: 60,
+        size: const Size(60, 60),
         markers: markers,
         builder: (context, cluster) {
+          // Extract stations belonging to this cluster
+          final clusterStations = cluster
+              .map((m) => markerToStation[m])
+              .whereType<GasStation>()
+              .toList();
+
+          // Find the price range for the current gas type
+          final prices = clusterStations.map((s) {
+            return switch (gasType) {
+              GasType.regular => s.regularPrice,
+              GasType.premium => s.premiumPrice,
+              GasType.diesel => s.dieselPrice,
+            };
+          }).whereType<double>().toList();
+
+          String label = cluster.length.toString();
+          if (prices.isNotEmpty) {
+            final minPrice = prices.reduce(math.min);
+            final maxPrice = prices.reduce(math.max);
+
+            if (minPrice == maxPrice) {
+              label = '\$${minPrice.toStringAsFixed(2)}';
+            } else {
+              label = '\$${minPrice.toStringAsFixed(2)} - \$${maxPrice.toStringAsFixed(2)}';
+            }
+          }
+
           return Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.blueAccent.withOpacity(0.7),
+              color: gasType.color.withValues(alpha: 0.75),
             ),
             child: Center(
               child: Text(
-                cluster.length.toString(),
+                label,
+                textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
+                  fontSize: 12,
                 ),
               ),
             ),
@@ -59,4 +98,5 @@ class StationsMarkerClusterLayer extends ConsumerWidget {
       ),
     );
   }
+
 }
