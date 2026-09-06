@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:math' as math;
 
 import 'layers/layers.dart';
 
@@ -28,12 +29,17 @@ class _MapCanvasState extends ConsumerState<MapCanvas> {
     ref.read(selectedStationProvider.notifier).setStation(station);
 
     final mapController = ref.read(mapControllerProvider);
-    // We shift the map center slightly south (subtract latitude) to move the marker
-    // upwards, centering it in the visible area above the StationInfoCard.
-    // Approx 0.004 degrees is ~90-110 pixels at zoom 15.
+    final zoom = mapController.camera.zoom;
+
+    // We shift the map center slightly south to move the marker upwards,
+    // centering it in the visible area above the StationInfoCard.
+    // We scale the offset by 2^(15 - zoom) to maintain a consistent pixel offset across zoom levels.
+    // 0.004 degrees is ~90-110 pixels at zoom 15.
+    final double offset = 0.004 * math.pow(2, 15 - zoom).toDouble();
+
     mapController.move(
-      LatLng(station.latitude - 0.004, station.longitude),
-      15.0,
+      LatLng(station.latitude - offset, station.longitude),
+      zoom,
     );
   }
 
