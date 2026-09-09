@@ -25,9 +25,18 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+    
+  flutter_launcher_icons: ^0.14.3
   flutter_lints: ^6.0.0
+    
 flutter:
   uses-material-design: true
 
   assets: 
     - assets/custom_ofm_bright_style_based_on_protomaps_light.json
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/app_icon.png"
+  min_sdk_android: 21
