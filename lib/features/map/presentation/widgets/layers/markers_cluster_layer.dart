@@ -49,7 +49,7 @@ class StationsMarkerClusterLayer extends ConsumerWidget {
     return MarkerClusterLayerWidget(
       options: MarkerClusterLayerOptions(
         maxClusterRadius: 60,
-        size: const Size(60, 60),
+        size: const Size(65, 65),
         markers: markers,
         builder: (context, cluster) {
           // Extract stations belonging to this cluster
