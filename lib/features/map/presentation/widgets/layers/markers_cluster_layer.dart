@@ -50,6 +50,7 @@ class StationsMarkerClusterLayer extends ConsumerWidget {
       options: MarkerClusterLayerOptions(
         maxClusterRadius: 60,
         size: const Size(65, 65),
+        alignment: Alignment.topCenter,
         markers: markers,
         builder: (context, cluster) {
           // Extract stations belonging to this cluster
@@ -99,6 +100,7 @@ class StationsMarkerClusterLayer extends ConsumerWidget {
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 12,
+                  height: 1.1,
                 ),
               ),
             ),
