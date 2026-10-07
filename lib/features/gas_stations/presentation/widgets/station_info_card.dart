@@ -1,12 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'dart:io';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:gasonera/features/map/providers/selected_station_provider.dart';
 
 import 'package:gasonera/features/gas_stations/domain/entities/gas_station.dart';
 
 class StationInfoCard extends ConsumerWidget {
   const StationInfoCard({super.key});
+
+Future<void> _openMaps(GasStation station) async {
+  final lat = station.latitude;
+  final lng = station.longitude;
+
+  final Uri uri;
+
+  if (Platform.isAndroid) {
+    // Android: Setting mode=d shows the driving route directions overview on screen
+    uri = Uri.parse('https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=driving');
+  } else if (Platform.isIOS) {
+    // iOS: Displays the route overview in Apple Maps without starting turn-by-turn
+    uri = Uri.parse('https://maps.apple.com/?daddr=$lat,$lng&dirflg=d');
+  } else {
+    // Web fallback
+    uri = Uri.parse('https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=driving');
+  }
+
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  } else {
+    // Fallback if launchUrl fails
+    final fallbackUri = Uri.parse('https://www.google.com/maps/dir/?api=1&destination=$lat,$lng');
+    await launchUrl(fallbackUri, mode: LaunchMode.externalApplication);
+  }
+}
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,7 +57,6 @@ class StationInfoCard extends ConsumerWidget {
     }
 
     return Card(
-      // margin: const EdgeInsets.fromLTRB(10, 0, 10, 22),
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Stack(
@@ -99,6 +126,21 @@ class StationInfoCard extends ConsumerWidget {
                       ],
                     ),
                   ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () => _openMaps(selectedStation),
+                    icon: const Icon(Icons.directions_outlined),
+                    label: const Text('Cómo llegar'),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -177,4 +219,3 @@ NOTA: Los precios se muestran tal como han sido reportados a la CRE y pueden var
     );
   }
 }
-
