@@ -2903,7 +2903,7 @@
       "type": "symbol",
       "source": "openmaptiles",
       "source-layer": "place",
-      "minzoom": 13,
+      "minzoom": 12,
       "maxzoom": 24,
       "filter": [
         "match",
@@ -2921,10 +2921,10 @@
         ],
         "text-font": ["Noto Sans Regular"],
         "text-letter-spacing": 0,
-        "text-size": ["interpolate", ["linear"], ["zoom"], 8, 9, 12, 10],
+        "text-size": ["interpolate", ["linear"], ["zoom"], 8, 9, 12, 12],
         "text-transform": "uppercase",
         "text-justify": "center",
-        "text-max-width": 7
+        "text-max-width": 10
       },
       "paint": {
         "text-color": "#333",
