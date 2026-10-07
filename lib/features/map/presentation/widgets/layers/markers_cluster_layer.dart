@@ -10,14 +10,31 @@ import 'package:gasonera/features/gas_stations/providers/selected_gas_type_provi
 import 'package:gasonera/features/gas_stations/providers/visible_stations_provider.dart';
 import 'package:gasonera/features/gas_stations/providers/lowest_price_provider.dart';
 import 'package:gasonera/features/map/providers/selected_station_provider.dart';
+import 'package:gasonera/features/map/providers/map_viewport_provider.dart';
 import 'package:gasonera/features/map/presentation/widgets/station_marker_factory.dart';
 
 class StationsMarkerClusterLayer extends ConsumerWidget {
   const StationsMarkerClusterLayer({super.key, this.onStationSelected});
   final void Function(GasStation station)? onStationSelected;
 
+  double interpolateClusterRadius(double zoom) {
+    const double baseZoom = 14.0;  // Zoom threshold
+    const double minZoom = 3.0;    // Floor zoom level where radius reaches max cap
+    const double baseRadius = 30.0; // Radius at zoom >= 14
+    const double maxRadius = 120.0; // Max radius when zoomed out (< 14)
+
+    if (zoom >= baseZoom) {
+      return baseRadius;
+    }
+
+    final double clampedZoom = math.max(minZoom, zoom);
+    final double t = (baseZoom - clampedZoom) / (baseZoom - minZoom);
+    return baseRadius + t * (maxRadius - baseRadius);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final zoom = ref.watch(mapViewportProvider.select((state) => state.zoom));
     final stationsAsync = ref.watch(visibleStationsProvider);
     final selectedStation = ref.watch(selectedStationProvider);
     final gasType = ref.watch(gasTypeProvider);
@@ -48,8 +65,8 @@ class StationsMarkerClusterLayer extends ConsumerWidget {
 
     return MarkerClusterLayerWidget(
       options: MarkerClusterLayerOptions(
-        maxClusterRadius: 60,
-        size: const Size(65, 65),
+        maxClusterRadius: interpolateClusterRadius(zoom).round(),
+        size: const Size(60, 60),
         alignment: Alignment.topCenter,
         markers: markers,
         builder: (context, cluster) {
@@ -81,8 +98,8 @@ class StationsMarkerClusterLayer extends ConsumerWidget {
           }
 
           final bool hasLowestPrice = prices.isNotEmpty &&
-                                     lowestPrice != null &&
-                                     prices.contains(lowestPrice);
+                                    lowestPrice != null &&
+                                    prices.contains(lowestPrice);
 
           return Container(
             decoration: BoxDecoration(
