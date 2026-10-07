@@ -17,7 +17,7 @@ class StationInfoCard extends ConsumerWidget {
     }
 
     final name = selectedStation.name;
-    final nameRegex = RegExp(r'[,]{0,1}[\s]+(S.A.)|(S. DE R.L.)|(S.A.B.)[\s]+(DE C.V.)'); // Regex pattern for organization suffix
+    final nameRegex = RegExp(r'(([,]?[\s]+S\.?\s?A\.?)|(S\.? DE R\.?\s?L\.?)|(S\.?A\.?B\.?))([\s]+DE C\.?\s?V\.?)$'); // Regex pattern for organization suffix
     final match = nameRegex.firstMatch(name);
 
     String mainPart = name;
