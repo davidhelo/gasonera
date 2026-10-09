@@ -104,17 +104,17 @@ class StationsMarkerClusterLayer extends ConsumerWidget {
           return Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: gasType.color.withValues(alpha: 0.75),
+              color: gasType.color(context).withValues(alpha: 0.75),
               border: hasLowestPrice
-                  ? Border.all(color: Colors.limeAccent, width: 3)
+                  ? Border.all(color: Theme.of(context).colorScheme.secondary, width: 3)
                   : null,
             ),
             child: Center(
               child: Text(
                 label,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Colors.white,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
                   fontWeight: FontWeight.bold,
                   fontSize: 12,
                   height: 1.1,

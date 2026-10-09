@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gasonera/theme/app_theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -29,8 +30,12 @@ class GasoneraMainApp extends ConsumerWidget {
     // Tgigger startup initialization
     ref.read(appStartupProvider);
 
-    return const MaterialApp(
+    // Use centralized light and dark themes with system theme mode
+    return MaterialApp(
       home: MapScreen(),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
     );
   }
 }
