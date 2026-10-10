@@ -83,7 +83,7 @@ class AppTheme {
   static final ThemeData lightTheme = ThemeData.light().copyWith(
     // Example customizations – you can adjust as needed.
     colorScheme: ThemeData.light().colorScheme.copyWith(
-      primary: Colors.blue,
+      primary: const Color.fromARGB(255, 238, 238, 238),
       secondary: Colors.limeAccent,
       error: Colors.red,
     ),
@@ -113,7 +113,7 @@ class AppTheme {
 
   static final ThemeData darkTheme = ThemeData.dark().copyWith(
     colorScheme: ThemeData.dark().colorScheme.copyWith(
-      primary: Colors.blueGrey,
+      primary: const Color.fromARGB(255, 238, 238, 238),
       secondary: Colors.limeAccent,
       error: Colors.redAccent,
     ),
@@ -125,9 +125,9 @@ class AppTheme {
     appBarTheme: const AppBarTheme(),
     extensions: <ThemeExtension<dynamic>>[
       const GasColors(
-        regular: Color(0xFF81C784), // lighter green for dark background
-        premium: Color.fromARGB(255, 255, 69, 58), // brighter red
-        diesel: Color(0xFFB0B0B0), // light grey
+        regular: Color.fromARGB(255, 97, 149, 100), // lighter green for dark background
+        premium: Color.fromARGB(255, 146, 37, 31), // brighter red
+        diesel: Color.fromARGB(255, 55, 55, 55), // light grey
       ),
       const StationInfoCardColors(
         // In dark mode we typically want light text on dark background.

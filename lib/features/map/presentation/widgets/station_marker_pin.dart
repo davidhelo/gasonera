@@ -63,7 +63,7 @@ class StationMarkerPin extends ConsumerWidget {
               child: Text(
                 '\$${price.toStringAsFixed(2)}',
                 style: TextStyle(
-                   color: Theme.of(context).colorScheme.onPrimary,
+                   color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.bold,
                   fontSize: isSelected ? 16 : 14,
                 ),
@@ -72,7 +72,7 @@ class StationMarkerPin extends ConsumerWidget {
             // Pin Needle Icon
             Icon(
               Icons.location_on,
-               color: isSelected ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.error.withOpacity(0.7),
+               color: isSelected ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.error.withValues(alpha: 0.7),
               size: isSelected ? 40 : 28,
             ),
           ],
