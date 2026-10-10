@@ -50,9 +50,19 @@ class StationsMarkerClusterLayer extends ConsumerWidget {
         return 0;
       });
 
-    // Map markers to their stations to retrieve price data in the cluster builder
+    // Map markers to their stations to retrieve price data in the cluster builder.
+    // Only include stations that have a non‑null price for the currently selected gas type.
     final markerToStation = <Marker, GasStation>{};
     final markers = sortedStations
+        // Filter out stations without a price for the selected gas type.
+        .where((station) {
+          final price = switch (gasType) {
+            GasType.regular => station.regularPrice,
+            GasType.premium => station.premiumPrice,
+            GasType.diesel => station.dieselPrice,
+          };
+          return price != null;
+        })
         .map((station) {
           final marker = buildStationMarker(
                 station: station,
