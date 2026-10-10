@@ -4,18 +4,23 @@ import 'package:flutter_map_vector_tiles/flutter_map_vector_tiles.dart' as vt;
 class BaseTileLayer extends StatelessWidget {
   const BaseTileLayer({super.key});
 
-  // Define the asynchronous style fetching method
-  Future<vt.Style> _loadStyle() async {
+  // Load a map style from the provided URI.
+  Future<vt.Style> _loadStyle(String uri) async {
     return await vt.StyleReader(
-      // uri: 'https://tiles.openfreemap.org/styles/positron', // default openfreemap style JSON
-      uri: 'asset://assets/custom_ofm_bright_style_based_on_protomaps_light.json',
+      uri: uri,
     ).read();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Choose style URI based on the current theme brightness.
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final String styleUri = isDark
+        ? 'https://tiles.openfreemap.org/styles/fiord'
+        : 'asset://assets/custom_ofm_bright_style_based_on_protomaps_light.json';
+
     return FutureBuilder<vt.Style>(
-      future: _loadStyle(),
+      future: _loadStyle(styleUri),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());

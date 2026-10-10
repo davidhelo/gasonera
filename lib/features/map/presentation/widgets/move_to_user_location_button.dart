@@ -20,8 +20,7 @@ class MoveToUserLocationButton extends ConsumerWidget {
         };
 
     return FloatingActionButton(
-      shape: CircleBorder(),
-      backgroundColor: const Color.fromARGB(225, 149, 226, 218),
+      shape: const CircleBorder(),
       onPressed: position == null
       ? null
       : () {

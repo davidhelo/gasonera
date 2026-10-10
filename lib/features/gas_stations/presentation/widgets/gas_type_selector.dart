@@ -16,7 +16,7 @@ class GasTypeSelector extends ConsumerWidget {
       padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 8)),
     ),
       segments: GasType.values.map((GasType type) {
-        final Color iconColor = type.color;
+          final Color iconColor = type.color(context);
         return ButtonSegment<GasType>(
           value: type,
           label: Text(_gasTypeLabel(type)),

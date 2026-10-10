@@ -46,14 +46,15 @@ class StationMarkerPin extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                color: gasType.color,
+               // Use theme‑based gas type color
+               color: gasType.color(context),
                 borderRadius: BorderRadius.circular(12),
-                border: isLowestPrice
-                  ? Border.all(color: Colors.limeAccent, width: 3)
-                  : null,
+                   border: isLowestPrice
+                     ? Border.all(color: Theme.of(context).colorScheme.secondary, width: 3)
+                     : null,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black26,
+                     color: Theme.of(context).shadowColor.withOpacity(0.26),
                     blurRadius: isSelected ? 8 : 4,
                     offset: Offset(0, isSelected ? 4 : 2),
                   ),
@@ -62,7 +63,7 @@ class StationMarkerPin extends ConsumerWidget {
               child: Text(
                 '\$${price.toStringAsFixed(2)}',
                 style: TextStyle(
-                  color: Colors.white,
+                   color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.bold,
                   fontSize: isSelected ? 16 : 14,
                 ),
@@ -71,7 +72,7 @@ class StationMarkerPin extends ConsumerWidget {
             // Pin Needle Icon
             Icon(
               Icons.location_on,
-              color: isSelected ? Colors.red : Colors.redAccent,
+               color: isSelected ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.error.withValues(alpha: 0.7),
               size: isSelected ? 40 : 28,
             ),
           ],

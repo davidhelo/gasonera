@@ -14,7 +14,6 @@ class MapScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('GASONERA', style: TextStyle(fontSize: 16)),
-        backgroundColor: Colors.teal,
       ),
       body: Stack(
         children: [

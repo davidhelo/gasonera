@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:gasonera/features/map/providers/selected_station_provider.dart';
 
 import 'package:gasonera/features/gas_stations/domain/entities/gas_station.dart';
+import 'package:gasonera/theme/app_theme.dart';
 
 class StationInfoCard extends ConsumerWidget {
   const StationInfoCard({super.key});
@@ -56,6 +57,9 @@ Future<void> _openMaps(GasStation station) async {
       suffixPart = name.substring(match.start);
     }
 
+    // Obtain custom colors from the theme extension (non-null)
+    final cardColors = Theme.of(context).extension<StationInfoCardColors>()!;
+
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -75,18 +79,18 @@ Future<void> _openMaps(GasStation station) async {
                         children: [
                           TextSpan(
                             text: mainPart,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                              color: cardColors.titleText,
                             ),
                           ),
                           TextSpan(
                             text: suffixPart,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
-                              color: Colors.grey,
+                              color: cardColors.subtitleText,
                             ),
                           ),
                         ],
@@ -95,32 +99,32 @@ Future<void> _openMaps(GasStation station) async {
                     ),
                     Text(
                       'CRE ID: ${selectedStation.creId}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey,
+                        color: cardColors.subtitleText,
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
                 const SizedBox(height: 16),
-                _pricesRow(selectedStation),
+                    _pricesRow(selectedStation, cardColors),
                 if (selectedStation.priceDate != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 6),
                     child: Row(
                       children: [
-                        Text(
+                          Text(
                           'Actualizado el ${DateFormat('dd/MMMM/yyyy', 'es').format(selectedStation.priceDate!.toLocal())}',
-                          style: const TextStyle(fontSize: 12, color: Colors.grey),
+                          style: TextStyle(fontSize: 12, color: cardColors.subtitleText),
                         ),
                         const SizedBox(width: 4),
                         GestureDetector(
                           onTap: () => _showPriceInfoDialog(context),
-                          child: const Icon(
+                          child: Icon(
                             Icons.info_outline_rounded,
                             size: 14,
-                            color: Colors.grey,
+                            color: cardColors.subtitleText,
                           ),
                         ),
                       ],
@@ -157,15 +161,15 @@ Future<void> _openMaps(GasStation station) async {
     );
   }
 
-  Widget _pricesRow(GasStation station) {
+  Widget _pricesRow(GasStation station, StationInfoCardColors cardColors) {
     return Row(
       children: [
         if (station.regularPrice != null)
-          Expanded(child: _buildPriceItem('Regular', station.regularPrice, const Color.fromARGB(255, 84, 135, 87))),
+          Expanded(child: _buildPriceItem('Regular', station.regularPrice, cardColors.borderRegular)),
         if (station.premiumPrice != null)
-          Expanded(child: _buildPriceItem('Premium', station.premiumPrice, const Color.fromARGB(255, 207, 115, 115))),
+          Expanded(child: _buildPriceItem('Premium', station.premiumPrice, cardColors.borderPremium)),
         if (station.dieselPrice != null)
-          Expanded(child: _buildPriceItem('Diesel', station.dieselPrice, const Color.fromARGB(255, 75, 75, 75))),
+          Expanded(child: _buildPriceItem('Diesel', station.dieselPrice, cardColors.borderDiesel)),
       ],
     );
   }
