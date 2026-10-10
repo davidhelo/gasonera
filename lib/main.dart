@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gasonera/theme/app_theme.dart';
+import 'package:gasonera/theme/theme_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -32,10 +33,11 @@ class GasoneraMainApp extends ConsumerWidget {
 
     // Use centralized light and dark themes with system theme mode
     return MaterialApp(
-      home: MapScreen(),
+      home: const MapScreen(),
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
+       // Use the theme mode from the provider, defaulting to system if not set.
+        themeMode: ref.watch(themeModeProvider),
     );
   }
 }
