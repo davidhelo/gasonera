@@ -83,7 +83,8 @@ class AppTheme {
   static final ThemeData lightTheme = ThemeData.light().copyWith(
     // Example customizations – you can adjust as needed.
     colorScheme: ThemeData.light().colorScheme.copyWith(
-      primary: const Color.fromARGB(255, 246, 246, 246),
+      // primary: const Color.fromARGB(255, 246, 246, 246),
+      surfaceDim: const Color.fromARGB(255, 241, 241, 241),
       secondary: Colors.limeAccent,
       error: Colors.red,
     ),
@@ -115,6 +116,7 @@ class AppTheme {
     colorScheme: ThemeData.dark().colorScheme.copyWith(
       primary: const Color.fromARGB(255, 238, 238, 238),
       secondary: Colors.limeAccent,
+      surfaceDim: const Color.fromARGB(255, 241, 241, 241),
       error: Colors.redAccent,
     ),
     // Use the same default FAB color for dark theme (or adjust as needed)

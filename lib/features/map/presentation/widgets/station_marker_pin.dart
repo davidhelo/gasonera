@@ -63,7 +63,7 @@ class StationMarkerPin extends ConsumerWidget {
               child: Text(
                 '\$${price.toStringAsFixed(2)}',
                 style: TextStyle(
-                   color: Theme.of(context).colorScheme.primary,
+                   color: Theme.of(context).colorScheme.surfaceDim,
                   fontWeight: FontWeight.bold,
                   fontSize: isSelected ? 16 : 14,
                 ),

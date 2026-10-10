@@ -66,7 +66,7 @@ class StationsMarkerClusterLayer extends ConsumerWidget {
     return MarkerClusterLayerWidget(
       options: MarkerClusterLayerOptions(
         maxClusterRadius: interpolateClusterRadius(zoom).round(),
-        size: const Size(60, 60),
+        size: const Size(65, 65),
         alignment: Alignment.topCenter,
         markers: markers,
         builder: (context, cluster) {
@@ -114,7 +114,7 @@ class StationsMarkerClusterLayer extends ConsumerWidget {
                 label,
                 textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).colorScheme.surfaceDim,
                   fontWeight: FontWeight.bold,
                   fontSize: 12,
                   height: 1.1,
