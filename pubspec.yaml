@@ -6,6 +6,9 @@ version: 0.1.0+1
 environment:
   sdk: ^3.13.0
 
+config_name:
+  name: "Gasonera"
+
 dependencies:
   flutter:
     sdk: flutter
@@ -30,6 +33,8 @@ dev_dependencies:
     
   flutter_launcher_icons: ^0.14.3
   flutter_lints: ^6.0.0
+  rename_app: ^1.6.6
+  
     
 flutter:
   uses-material-design: true
