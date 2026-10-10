@@ -83,7 +83,7 @@ class AppTheme {
   static final ThemeData lightTheme = ThemeData.light().copyWith(
     // Example customizations – you can adjust as needed.
     colorScheme: ThemeData.light().colorScheme.copyWith(
-      primary: const Color.fromARGB(255, 238, 238, 238),
+      primary: const Color.fromARGB(255, 246, 246, 246),
       secondary: Colors.limeAccent,
       error: Colors.red,
     ),

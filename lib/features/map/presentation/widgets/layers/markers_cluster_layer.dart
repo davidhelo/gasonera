@@ -114,7 +114,7 @@ class StationsMarkerClusterLayer extends ConsumerWidget {
                 label,
                 textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
+                    color: Theme.of(context).colorScheme.primary,
                   fontWeight: FontWeight.bold,
                   fontSize: 12,
                   height: 1.1,
