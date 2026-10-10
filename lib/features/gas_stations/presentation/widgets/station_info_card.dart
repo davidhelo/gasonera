@@ -115,7 +115,7 @@ Future<void> _openMaps(GasStation station) async {
                     child: Row(
                       children: [
                           Text(
-                          'Actualizado el ${DateFormat('dd/MMMM/yyyy', 'es').format(selectedStation.priceDate!.toLocal())}',
+                          'Ultimo cambio de precios el ${DateFormat('dd/MMMM/yyyy', 'es').format(selectedStation.priceDate!.toLocal())}',
                           style: TextStyle(fontSize: 12, color: cardColors.subtitleText),
                         ),
                         const SizedBox(width: 4),
