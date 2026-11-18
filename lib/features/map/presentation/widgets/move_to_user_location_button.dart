@@ -31,7 +31,7 @@ class MoveToUserLocationButton extends ConsumerWidget {
               position.latitude,
               position.longitude,
             ),
-            zoom: 15,
+            zoom: 14.5,
           );
         } else {
           ref.read(mapControllerProvider).move(

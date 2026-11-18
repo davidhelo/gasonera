@@ -36,8 +36,8 @@ class _MapCanvasState extends ConsumerState<MapCanvas> with TickerProviderStateM
     // We shift the map center slightly south to move the marker upwards,
     // centering it in the visible area above the StationInfoCard.
     // We scale the offset by 2^(15 - zoom) to maintain a consistent pixel offset across zoom levels.
-    // 0.004 degrees is ~90-110 pixels at zoom 15.
-    final double offset = 0.004 * math.pow(2, 15 - zoom).toDouble();
+    // 0.004 degrees is ~90-110 pixels at zoom 14.25
+    final double offset = 0.004 * math.pow(2, 14.25 - zoom).toDouble();
 
     _animatedController.animateTo(
       dest: LatLng(station.latitude - offset, station.longitude),
@@ -74,7 +74,7 @@ class _MapCanvasState extends ConsumerState<MapCanvas> with TickerProviderStateM
 
         _animatedController.animateTo(
           dest: LatLng(position.latitude, position.longitude),
-          zoom: 15.0,
+          zoom: 14.25,
         );
       });
     });
