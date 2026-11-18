@@ -1,6 +1,12 @@
 // lib/core/database/app_database.dart
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+
+// Provider definition for AppDatabase
+final appDatabaseProvider = Provider<AppDatabase>((ref) {
+  return AppDatabase();
+});
 
 class AppDatabase {
   static Database? _db;
@@ -40,9 +46,15 @@ class AppDatabase {
         last_updated INTEGER NOT NULL
       )
     ''');
-    // Create index for latitude and logitude for faster performance on spatial queries
+    
+    // Create index for latitude and longitude for spatial queries
     await db.execute('''
       CREATE INDEX idx_daily_gas_stations_coords ON daily_gas_stations(latitude, longitude);
+    ''');
+
+    // Create index for price_date for fast delta sorting and filtering
+    await db.execute('''
+      CREATE INDEX idx_daily_gas_stations_price_date ON daily_gas_stations(price_date);
     ''');
   }
 
